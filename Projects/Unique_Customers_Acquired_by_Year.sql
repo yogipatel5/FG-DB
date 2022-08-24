@@ -1,9 +1,17 @@
 #Number of Orders Shipped
 SELECT
-#     customers.first_order_id
-    count(DISTINCT orders.id) as Total_Customers,
-    month(orders.created_at) as month ,
-    year(orders.created_at) as year
-FROM orders
-WHERE orders.fulfillment_status_id = 5
-group by month(orders.created_at), year(orders.created_at)
+	COUNT( DISTINCT customer_id )
+  , year
+  , month
+FROM (
+     SELECT
+         #     customers.first_order_id
+         customer_id
+       , COUNT( DISTINCT orders.customer_id ) AS total_customers
+       , MONTH( orders.created_at )           AS month
+       , YEAR( orders.created_at )            AS year
+     FROM orders
+     WHERE orders.fulfillment_status_id = 5
+     GROUP BY MONTH( orders.created_at ), YEAR( orders.created_at ), orders.customer_id
+     ) o
+GROUP BY year, month
