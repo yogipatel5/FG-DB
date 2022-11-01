@@ -1,0 +1,1 @@
+SELECT count(*) FRom (SELECT * FROM customers where customers.total_orders > 0 group by customers.payer_email) as a
